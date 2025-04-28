@@ -1,0 +1,22 @@
+# Ignorar carpetas de CLion y CMake
+cmake-build-debug/
+cmake-build-release/
+.idea/
+.vscode/
+
+# Ignorar binarios y objetos
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+
+# Ignorar archivos de usuario de CLion
+*.iml
+
+# Ignorar backups
+*~
+*.swp
+*.swo
