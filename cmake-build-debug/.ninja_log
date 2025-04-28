@@ -1,0 +1,6 @@
+# ninja log v6
+6	394	7675068580044237	build.ninja	853d5e966d2589cf
+11	1293	7675068580891936	CMakeFiles/Compilador_cpp.dir/src/lexer.cpp.obj	71a2e9a122c1b5ff
+4	1299	7675068580820719	CMakeFiles/Compilador_cpp.dir/src/main.cpp.obj	a3f95786e75f01cd
+17	1439	7675068580954206	CMakeFiles/Compilador_cpp.dir/src/tokens.cpp.obj	1cafa7d9b469e3c4
+1439	2013	7675068595172636	Compilador_cpp.exe	56638fb217123bcd
