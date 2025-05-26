@@ -55,6 +55,7 @@ private:
 
     std::unique_ptr<Statement> parse_statement();
     std::unique_ptr<Statement> parse_let_statement();
+    std::unique_ptr<Statement> parse_while_statement(); 
     std::unique_ptr<BlockStatement> parse_block_statement();
     std::unique_ptr<Statement> parse_expression_statement();
     std::unique_ptr<Statement> parse_function_literal_statement();
@@ -71,8 +72,7 @@ private:
 
     Precedence peek_precedence();
     Precedence cur_precedence();
-
     Precedence get_precedence(TokenType type);
 };
 
-#endif // PARSER_H
+#endif 

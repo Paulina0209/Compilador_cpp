@@ -43,6 +43,7 @@ enum class TokenType {
     ELSE,
     RETURN,
     FOR,
+    WHILE,
 };
 
 class Token {
@@ -89,6 +90,7 @@ private:
             case TokenType::ELSE: return "ELSE";
             case TokenType::RETURN: return "RETURN";
             case TokenType::FOR: return "FOR";
+            case TokenType::WHILE: return "WHILE";
             default: return "UNKNOWN";
         }
     }
@@ -104,6 +106,7 @@ inline TokenType lookup_token_type(const std::string& literal) {
         {"else", TokenType::ELSE},
         {"return", TokenType::RETURN},
         {"for", TokenType::FOR},
+        {"while", TokenType::WHILE},
     };
 
     auto it = keywords.find(literal);

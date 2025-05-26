@@ -39,6 +39,9 @@ std::unique_ptr<Statement> Parser::parse_statement() {
     if (current_token.token_type == TokenType::LET) {
         return parse_let_statement();
     }
+    if (current_token.token_type == TokenType::WHILE) {
+        return parse_while_statement();
+    }
     return nullptr;
 }
 
@@ -65,6 +68,41 @@ std::unique_ptr<Statement> Parser::parse_let_statement() {
     }
 
     return std::make_unique<LetStatement>(let_token, name, std::move(value));
+}
+
+std::unique_ptr<Statement> Parser::parse_while_statement() {
+    Token token = current_token;
+
+    if (!expect_peek(TokenType::LPAREN)) return nullptr;
+
+    next_token(); // Avanza a la condición
+    auto condition = parse_expression(Precedence::LOWEST);
+    if (!condition) return nullptr;
+
+    if (!expect_peek(TokenType::RPAREN)) return nullptr;
+    if (!expect_peek(TokenType::LBRACE)) return nullptr;
+
+    auto body = parse_block_statement();
+
+    return std::make_unique<WhileStatement>(token, std::move(condition), std::move(body));
+}
+
+std::unique_ptr<BlockStatement> Parser::parse_block_statement() {
+    Token token = current_token;
+    std::vector<std::unique_ptr<Statement>> statements;
+
+    next_token();
+
+    while (current_token.token_type != TokenType::RBRACE &&
+           current_token.token_type != TokenType::EOF_TOKEN) {
+        auto stmt = parse_statement();
+        if (stmt) {
+            statements.push_back(std::move(stmt));
+        }
+        next_token();
+    }
+
+    return std::make_unique<BlockStatement>(token, std::move(statements));
 }
 
 Precedence Parser::get_precedence(TokenType type) {

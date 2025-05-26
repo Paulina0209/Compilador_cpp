@@ -1,18 +1,5 @@
 #include "tokens.h"
 
-TokenType lookup_token_type(const std::string& literal) {
-    static const std::unordered_map<std::string, TokenType> keywords = {
-        {"function", TokenType::FUNCTION},
-        {"let", TokenType::LET},
-        {"for", TokenType::FOR}
-    };
-
-    auto it = keywords.find(literal);
-    if (it != keywords.end()) {
-        return it->second;
-    }
-    return TokenType::IDENT;
-}
 
 std::string Token::token_type_to_string(TokenType type) const {
     switch (type) {
@@ -32,6 +19,18 @@ std::string Token::token_type_to_string(TokenType type) const {
         case TokenType::RBRACE: return "RBRACE";
         case TokenType::RPAREN: return "RPAREN";
         case TokenType::SEMICOLON: return "SEMICOLON";
+        case TokenType::SLASH: return "SLASH";
+        case TokenType::ASTERISK: return "ASTERISK";
+        case TokenType::BANG: return "BANG";
+        case TokenType::LT: return "LT";
+        case TokenType::GT: return "GT";
+        case TokenType::NOT_EQ: return "NOT_EQ";
+        case TokenType::TRUE: return "TRUE";
+        case TokenType::FALSE: return "FALSE";
+        case TokenType::IF: return "IF";
+        case TokenType::ELSE: return "ELSE";
+        case TokenType::RETURN: return "RETURN";
+        case TokenType::WHILE: return "WHILE";
         default: return "UNKNOWN";
     }
 }
