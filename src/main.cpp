@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
+#include <memory>
 #include "lexer.h"
-#include "tokens.h"
+#include "parser.h"
+#include "ast.h"
 
 int main() {
-    const Token EOF_TOKEN(TokenType::EOF_TOKEN, "");
-
     std::string source;
+    std::cout << "Escribe código o 'exit' para salir:\n";
+
     while (true) {
         std::cout << ">> ";
         if (!std::getline(std::cin, source)) {
@@ -18,10 +20,14 @@ int main() {
         }
 
         Lexer lexer(source);
-        Token token = lexer.next_token();
-        while (!(token.token_type == EOF_TOKEN.token_type && token.literal == EOF_TOKEN.literal)) {
-            std::cout << token.to_string() << std::endl;
-            token = lexer.next_token();
+        Parser parser(lexer);
+        std::unique_ptr<Program> program = parser.parse_program();
+
+        if (program) {
+            std::cout << "AST generado:\n";
+            std::cout << program->to_string() << std::endl;
+        } else {
+            std::cerr << "Error al generar el AST.\n";
         }
     }
 
