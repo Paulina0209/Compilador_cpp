@@ -1,7 +1,7 @@
 #include "tokens.h"
 
-
-std::string Token::token_type_to_string(TokenType type) const {
+// Función libre (fuera de la clase Token)
+std::string token_type_to_string(TokenType type) {
     switch (type) {
         case TokenType::ASSIGN: return "ASSIGN";
         case TokenType::COMMA: return "COMMA";
@@ -16,6 +16,7 @@ std::string Token::token_type_to_string(TokenType type) const {
         case TokenType::LET: return "LET";
         case TokenType::LPAREN: return "LPAREN";
         case TokenType::PLUS: return "PLUS";
+        case TokenType::MINUS: return "MINUS";
         case TokenType::RBRACE: return "RBRACE";
         case TokenType::RPAREN: return "RPAREN";
         case TokenType::SEMICOLON: return "SEMICOLON";

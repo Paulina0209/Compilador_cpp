@@ -17,6 +17,8 @@ class Statement : public Node {
 };
 
 class Expression : public Node {
+public:
+    virtual Token get_token() const = 0;
 };
 
 class Program : public Node {
@@ -45,6 +47,7 @@ public:
     std::string name;
     std::unique_ptr<Expression> value;
 
+
     LetStatement(const Token& tok, const std::string& nm, std::unique_ptr<Expression> val)
         : token(tok), name(nm), value(std::move(val)) {}
 
@@ -61,6 +64,10 @@ class Identifier : public Expression {
 public:
     Token token;
     std::string value;
+
+    Token get_token() const override {
+        return token;
+    }
 
     Identifier(const Token& tok, const std::string& val)
         : token(tok), value(val) {}
@@ -79,6 +86,7 @@ public:
     Token token;
     std::vector<std::unique_ptr<Statement>> statements;
 
+
     BlockStatement(const Token& tok) : token(tok) {}
 
     std::string token_literal() const override {
@@ -94,10 +102,15 @@ public:
         return result;
     }
 };
+
 class IntegerLiteral : public Expression {
 public:
     Token token;
     int value;
+
+    Token get_token() const override {
+        return token;
+    }
 
     IntegerLiteral(const Token& tok, int val)
         : token(tok), value(val) {}
@@ -111,11 +124,58 @@ public:
     }
 };
 
+class BooleanLiteral : public Expression {
+public:
+    Token token;
+    bool value;
+
+    Token get_token() const override {
+        return token;
+    }
+
+    BooleanLiteral(const Token& tok, bool val)
+        : token(tok), value(val) {}
+
+    std::string token_literal() const override {
+        return token.literal;
+    }
+
+    std::string to_string() const override {
+        return value ? "true" : "false";
+    }
+};
+
+class PrefixExpression : public Expression {
+public:
+    Token token;
+    std::string op;
+    std::unique_ptr<Expression> right;
+
+    Token get_token() const override {
+        return token;
+    }
+
+    PrefixExpression(const Token& tok, const std::string& operator_, std::unique_ptr<Expression> expr)
+        : token(tok), op(operator_), right(std::move(expr)) {}
+
+    std::string token_literal() const override {
+        return token.literal;
+    }
+
+    std::string to_string() const override {
+        return "(" + op + right->to_string() + ")";
+    }
+};
+
 class FunctionLiteral : public Expression {
 public:
     Token token;
     std::vector<std::string> parameters;
-    std::unique_ptr<class BlockStatement> body;
+    std::shared_ptr<BlockStatement> body;
+
+    Token get_token() const override {
+        return token;
+    }
 
     FunctionLiteral(const Token& tok)
         : token(tok) {}
@@ -141,6 +201,10 @@ public:
     Token token;
     std::unique_ptr<Expression> function;
     std::vector<std::unique_ptr<Expression>> arguments;
+
+    Token get_token() const override {
+        return token;
+    }
 
     CallExpression(const Token& tok, std::unique_ptr<Expression> func)
         : token(tok), function(std::move(func)) {}
@@ -185,6 +249,10 @@ public:
     std::unique_ptr<BlockStatement> consequence;
     std::unique_ptr<BlockStatement> alternative;
 
+    Token get_token() const override {
+        return token;
+    }
+
     IfExpression(const Token& tok) : token(tok) {}
 
     std::string token_literal() const override {
@@ -192,7 +260,7 @@ public:
     }
 
     std::string to_string() const override {
-        std::string out = "if" + condition->to_string() + " " + consequence->to_string();
+        std::string out = "if " + condition->to_string() + " " + consequence->to_string();
         if (alternative) {
             out += " else " + alternative->to_string();
         }
@@ -206,14 +274,15 @@ public:
     std::unique_ptr<Expression> condition;
     std::unique_ptr<BlockStatement> body;
 
-    WhileStatement(const Token& tok) : token(tok) {}
+    WhileStatement(const Token& tok, std::unique_ptr<Expression> cond, std::unique_ptr<BlockStatement> bod)
+        : token(tok), condition(std::move(cond)), body(std::move(bod)) {}
 
     std::string token_literal() const override {
         return token.literal;
     }
 
     std::string to_string() const override {
-        return token_literal() + " " + condition->to_string() + " " + (body ? body->to_string() : "");
+        return "while (" + condition->to_string() + ") " + (body ? body->to_string() : "");
     }
 };
 
@@ -223,6 +292,10 @@ public:
     std::unique_ptr<Expression> left;
     std::string op;
     std::unique_ptr<Expression> right;
+
+    Token get_token() const override {
+        return token;
+    }
 
     InfixExpression(const Token& tok, std::unique_ptr<Expression> l, const std::string& operator_, std::unique_ptr<Expression> r)
         : token(tok), left(std::move(l)), op(operator_), right(std::move(r)) {}

@@ -55,10 +55,9 @@ private:
 
     std::unique_ptr<Statement> parse_statement();
     std::unique_ptr<Statement> parse_let_statement();
-    std::unique_ptr<Statement> parse_while_statement(); 
+    std::unique_ptr<Statement> parse_while_statement();
     std::unique_ptr<BlockStatement> parse_block_statement();
     std::unique_ptr<Statement> parse_expression_statement();
-    std::unique_ptr<Statement> parse_function_literal_statement();
 
     std::unique_ptr<Expression> parse_expression(Precedence precedence);
     std::unique_ptr<Expression> parse_identifier();
@@ -66,8 +65,11 @@ private:
     std::unique_ptr<Expression> parse_prefix_expression();
     std::unique_ptr<Expression> parse_infix_expression(std::unique_ptr<Expression> left);
     std::unique_ptr<Expression> parse_grouped_expression();
+    std::unique_ptr<Expression> parse_function_literal();
+    std::unique_ptr<Expression> parse_call_expression(std::unique_ptr<Expression> function);
+    std::unique_ptr<Expression> parse_boolean();
+    std::unique_ptr<Expression> parse_if_expression();
 
-    std::unique_ptr<FunctionLiteral> parse_function_literal();
     std::vector<std::string> parse_function_parameters();
 
     Precedence peek_precedence();
@@ -75,4 +77,4 @@ private:
     Precedence get_precedence(TokenType type);
 };
 
-#endif 
+#endif

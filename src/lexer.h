@@ -21,6 +21,7 @@ private:
     void skip_whitespace();
     bool is_number(char ch) const;
     bool is_letter(char ch) const;
+    bool is_operator(char ch) const;
     std::string read_number();
     std::string read_literal();
 };

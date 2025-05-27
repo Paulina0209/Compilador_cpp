@@ -11,5 +11,8 @@ add_executable(Compilador_cpp
         src/lexer.cpp
         src/tokens.cpp
         src/parser.cpp
-        src/ast.cpp
+        src/object.h
+        src/environment.h
+        src/evaluator.cpp
+        src/evaluator.h
 )

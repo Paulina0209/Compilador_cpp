@@ -46,6 +46,9 @@ enum class TokenType {
     WHILE,
 };
 
+// 🔁 Declaración de función global
+std::string token_type_to_string(TokenType type);
+
 class Token {
 public:
     TokenType token_type;
@@ -57,42 +60,6 @@ public:
 
     std::string to_string() const {
         return "Token(" + token_type_to_string(token_type) + ", " + literal + ")";
-    }
-
-private:
-    std::string token_type_to_string(TokenType type) const {
-        switch (type) {
-            case TokenType::ILLEGAL: return "ILLEGAL";
-            case TokenType::EOF_TOKEN: return "EOF";
-            case TokenType::IDENT: return "IDENT";
-            case TokenType::INT: return "INT";
-            case TokenType::ASSIGN: return "ASSIGN";
-            case TokenType::PLUS: return "PLUS";
-            case TokenType::MINUS: return "MINUS";
-            case TokenType::BANG: return "BANG";
-            case TokenType::ASTERISK: return "ASTERISK";
-            case TokenType::SLASH: return "SLASH";
-            case TokenType::LT: return "LT";
-            case TokenType::GT: return "GT";
-            case TokenType::EQ: return "EQ";
-            case TokenType::NOT_EQ: return "NOT_EQ";
-            case TokenType::COMMA: return "COMMA";
-            case TokenType::SEMICOLON: return "SEMICOLON";
-            case TokenType::LPAREN: return "LPAREN";
-            case TokenType::RPAREN: return "RPAREN";
-            case TokenType::LBRACE: return "LBRACE";
-            case TokenType::RBRACE: return "RBRACE";
-            case TokenType::FUNCTION: return "FUNCTION";
-            case TokenType::LET: return "LET";
-            case TokenType::TRUE: return "TRUE";
-            case TokenType::FALSE: return "FALSE";
-            case TokenType::IF: return "IF";
-            case TokenType::ELSE: return "ELSE";
-            case TokenType::RETURN: return "RETURN";
-            case TokenType::FOR: return "FOR";
-            case TokenType::WHILE: return "WHILE";
-            default: return "UNKNOWN";
-        }
     }
 };
 
